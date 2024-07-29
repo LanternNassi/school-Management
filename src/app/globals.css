@@ -1,33 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital@0;1&display=swap');
+* {
+    font-family: "Figtree", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+.root {
+  width: 97vw;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+  max-height: 300vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.dashboardRoot {
+  width: 97vw;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-grow: 1;
+  max-height: 300vh;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.navbar {
+  width : 250;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.heading {
+  height : 10vh;
+  width: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rootheader{
+  position: relative;
+  top:0;
+  height : 11vh;
+  width : 99vw;
+  background-color: white;
+  display : flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rootheader::after {
+  content: ''; /* Required for the pseudo-element to work */
+  position: absolute; /* Position the pseudo-element absolutely within the div */
+  bottom: 0; /* Position at the bottom of the div */
+  left: 0; /* Align to the left edge */
+  width: 100%; /* Make it span the full width of the div */
+  height: 4px; /* Height of the bottom border */
+  background-color: white; /* Color of the bottom border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add the shadow effect */
 }

@@ -1,0 +1,67 @@
+.breadcrumbUser{
+    height : 10dvh;
+    width : 90dvw;
+    display: flex;
+    align-items: center;
+}
+
+.userCard{
+    max-height : 100dvh;
+    width : 80dvw;
+    flex-grow: 1;
+
+}
+
+.rootUserId{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex-grow: 1;
+    max-height: 300vh;
+}
+
+.cardContent{
+
+}
+
+
+.userInfo{
+    height : 10dvh;
+    width : 80dvw;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px 90px;
+}
+
+
+.headerIcon{
+    height : 20dvh;
+    width : 80dvw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contactTable {
+    min-height: 20dvh;
+    width : 78dvw;
+}
+
+.Actions{
+    height : 20dvh;
+    width : 50dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ActionsRegion{
+    height : 20dvh;
+    width : 75dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

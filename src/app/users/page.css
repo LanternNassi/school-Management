@@ -1,0 +1,29 @@
+
+.Actions{
+    height : 20dvh;
+    width : 50dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.ActionsRegion{
+    height : 20dvh;
+    width : 85dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.Search{
+    height : 15dvh;
+    width : 80dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

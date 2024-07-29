@@ -1,0 +1,29 @@
+
+.ActionsClass{
+    height : 20dvh;
+    width : 30dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.ActionsRegionClass{
+    height : 20dvh;
+    width : 85dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.SearchClass{
+    height : 15dvh;
+    width : 80dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}

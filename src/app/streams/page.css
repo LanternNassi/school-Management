@@ -1,0 +1,29 @@
+
+.ActionsStream{
+    height : 20dvh;
+    width : 30dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.ActionsRegionStream{
+    height : 20dvh;
+    width : 85dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SearchStream{
+    height : 15dvh;
+    width : 80dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
