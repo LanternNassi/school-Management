@@ -68,3 +68,12 @@
   background-color: white; /* Color of the bottom border */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add the shadow effect */
 }
+
+
+.badge{
+  height: 9dvh;
+  width : 8dvw;
+  background-image: url('../../public/badge.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}

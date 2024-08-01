@@ -1,7 +1,7 @@
 
 .ActionsStream{
     height : 20dvh;
-    width : 30dvw;
+    width : 40dvw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -335,6 +335,17 @@ export default function page() {
           >
             Delete
           </Button>
+
+          <Button
+            variant="contained"
+            disabled={!(selected_streams.length > 0)}
+            onClick={()=>{
+              router.push('/students')
+            }}
+            startIcon={<DeleteIcon />}
+          >
+            View Students
+          </Button>
         </div>
 
         <Button

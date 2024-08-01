@@ -35,6 +35,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Alert } from "@mui/material";
 
 import { styled } from "@mui/system";
+import Image from "next/image";
 
 import PropTypes from "prop-types";
 import CustomSearch from "./CustomSearch";
@@ -152,7 +153,7 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
     borderRadius: theme.shape.borderRadius,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: "7vw",
   }));
@@ -181,18 +182,29 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
     <div className="root">
       <div className="rootheader">
         <NavOpenDiv sx={{ width: "33vw" }}>
-          <Button
+          {/* <Button
             onClick={toggleDrawer(true)}
             variant="outlined"
-            startIcon={<AppsIcon />}
+            sx = {{padding : 1}}
+            startIcon={
+              
+            }
           >
             MENU
-          </Button>
+          </Button> */}
 
-          <Typography variant="h5">Kalisizo S.S Payments </Typography>
+          <Image
+            onClick={toggleDrawer(true)}
+            src="/badge.jpg" // Path to your image
+            alt="Example image"
+            width={120} // Desired width
+            height={120} // Desired height
+          />
+
+          <Typography variant="h5">BRIGHT GENERATION </Typography>
         </NavOpenDiv>
 
-        <NavOpenDiv style={{ width: "50vw" }}>
+        <NavOpenDiv style={{ width: "58vw" }}>
           <CustomSearch
             placeholder={"Search Feature"}
             icon_1={<SearchIcon />}
