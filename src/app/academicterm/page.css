@@ -1,0 +1,66 @@
+.space{
+    height: 8dvh;
+    width : 10dvh;
+}
+
+.section{
+    width : 80vw;
+    min-height: 10vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.ActionsTerm{
+    height : 20dvh;
+    width : 40dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ActionsRegionTerm{
+    height : 20dvh;
+    width : 85dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.sectionItem{
+    height : 60dvh;
+    width: 80dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.item{
+    height : 20dvh;
+    width: 20dvw;
+    display: flex;
+    color : white;
+    background-color:#105D5E;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-width: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.item:hover{
+    background-color: #0C3C3D;
+}
+
+.item:active{
+    background-color: #0C3C3D;
+    height: 19dvh;
+    width: 19dvw;
+}

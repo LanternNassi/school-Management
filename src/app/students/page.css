@@ -1,0 +1,29 @@
+
+.ActionsStudent{
+    height : 20dvh;
+    width : 40dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.ActionsRegionStudent{
+    height : 20dvh;
+    width : 85dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.SearchStudent{
+    height : 15dvh;
+    width : 80dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

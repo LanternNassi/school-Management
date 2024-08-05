@@ -97,6 +97,12 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
       icon: <AddCardOutlinedIcon />,
       admin: false,
     },
+    {
+      text: "Academic Terms",
+      link: "/academicterm",
+      icon: <AddCardOutlinedIcon />,
+      admin: false,
+    },
   ];
 
   const TransactionsSection: section[] = [
@@ -114,6 +120,21 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
       admin: true,
     },
   ];
+
+  const ReportGenerationSection: section[] = [
+    {
+      text: "Upload Report",
+      link: "/UploadReports",
+      icon: <AccountCircleOutlinedIcon />,
+      admin: true,
+    },
+    {
+      text: "Reports",
+      link: "/Reports",
+      icon: <AccountCircleOutlinedIcon />,
+      admin: true,
+    }
+  ]
 
   const LayoutItem = (component: section): ReactNode => (
     <ListItem
@@ -214,7 +235,7 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
           />
           <AccountBalanceOutlinedIcon />
           <InboxIcon />
-          <CircleNotificationsOutlinedIcon />
+          <CircleNotificationsOutlinedIcon/>
           <Button
             onClick={() => {}}
             variant="contained"
@@ -282,6 +303,18 @@ const DefaultLayout: React.FC<Props> = ({ active_tab, children }) => {
         </SectionHeader>
         <Divider />
         {drawerList(TransactionsSection)}
+
+      <SectionHeader>
+          <Typography
+            style={{ fontSize: "17px", fontWeight: "bold" }}
+            variant="h6"
+          >
+            Reports Management
+          </Typography>
+        </SectionHeader>
+        <Divider />
+        {drawerList(ReportGenerationSection)}
+    
       </Drawer>
 
       {children}

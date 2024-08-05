@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import React, { ReactNode } from "react";
@@ -307,7 +308,7 @@ export default function page() {
   };
 
   React.useEffect(() => {
-    FetchStudents(active_stream? {'stream' : active_stream.id} : null);
+    FetchStudents(active_stream? {'streamId' : active_stream.id} : null);
     createHeaders();
   }, [submitting]);
 
@@ -319,8 +320,8 @@ export default function page() {
         outlined={feedBack ? feedBack.outlined : false}
         status={feedBack ? feedBack.status : "error"}
       />
-      <div className="ActionsRegionStream">
-        <div className="ActionsStream">
+      <div className="ActionsRegionStudent">
+        <div className="ActionsStudent">
           <Button
             variant="contained"
             onClick={() => {
@@ -381,7 +382,7 @@ export default function page() {
         </div>
       </Divider>
 
-      <div className={"SearchStream"}>
+      <div className={"SearchStudent"}>
         <Alert
           variant="outlined"
           severity={active_stream ? "success" : "warning"}
@@ -436,7 +437,7 @@ export default function page() {
             FetchStreamById(selected[0], (data) => {
               setactive_stream(data);
             });
-            FetchStudents({'stream':selected[0]})
+            FetchStudents({'streamId':selected[0]})
             setTimeout(() => {
               setFeedback(null);
             }, 3000);

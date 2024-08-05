@@ -12,3 +12,4 @@ export interface IPostClassSchema {
     name : string;
     more_info : string;
 }
+
