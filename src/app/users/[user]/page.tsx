@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import React, { useEffect, ReactNode } from "react";
@@ -259,7 +260,7 @@ export default function page({ params }: { params: { user: string } }) {
             href="/users"
           >
             <AccountCircleOutlinedIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            User
+            Users
           </Link>
 
           <Typography

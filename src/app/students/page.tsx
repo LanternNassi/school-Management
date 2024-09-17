@@ -32,9 +32,13 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import { FeedBack, FeedBackProps } from "@/components/FeedBack";
 import { toDDMMYYYY } from "@/Utils/ConvertDateTime";
-import { useRouter } from "next/navigation";
+
+
+import { useRouter , useSearchParams } from "next/navigation";
+
 import BottomView from "@/components/BottomView";
 import { IStreamSchema } from "@/schema/IStreamSchema";
+
 
 export default function page() {
   const [students, setstudents] = React.useState<IStudentSchema[] | null>(null);
@@ -54,6 +58,9 @@ export default function page() {
   const [bottomView, setBottomView] = React.useState<boolean>(false);
 
   const router = useRouter();
+
+  const searchparams = useSearchParams();
+  const stream_id = searchparams.get('stream')
 
   const FetchStudents = (params : object|null): void => {
     Custom_Axios()
@@ -107,7 +114,7 @@ export default function page() {
 
   const FetchStreams = (OnSuccess: (data: IStreamSchema[]) => void): void => {
     Custom_Axios()
-      .get("/Streams")
+      .get("/Streams?verbose=true")
       .then((response) => {
         if (response.status == 200) {
           OnSuccess(response.data);
@@ -117,14 +124,14 @@ export default function page() {
   
 
   const createHeaders = (): void => {
-    const Studentsheaders: ITableHeaderSchema[] = [
+    const Studentsheaders: ITableHeaderSchema<IStudentSchema>[] = [
       {
         id: "id",
         numeric: false,
         disablePadding: true,
         label: "Student Id",
         alignment: "left",
-        resolver: (row: IStudentSchema) => row.id,
+        resolver: (row) => row.id,
       },
       {
         id: "firstName",
@@ -132,7 +139,7 @@ export default function page() {
         disablePadding: true,
         label: "Name",
         alignment: "left",
-        resolver: (row: IStudentSchema) => `${row.firstName} ${row.otherNames}`,
+        resolver: (row) => `${row.firstName} ${row.otherNames}`,
       },
       {
         id: "payCode",
@@ -140,7 +147,7 @@ export default function page() {
         disablePadding: true,
         label: "Pay Code",
         alignment: "left",
-        resolver: (row: IStudentSchema) => row.payCode,
+        resolver: (row) => row.payCode,
       },
       {
         id: "Stream",
@@ -148,7 +155,7 @@ export default function page() {
         disablePadding: true,
         label: "Stream",
         alignment: "left",
-        resolver: (row: IStudentSchema) => row.stream.name,
+        resolver: (row) => row.stream.name,
       },
       {
         id: "addedAt",
@@ -156,7 +163,7 @@ export default function page() {
         disablePadding: true,
         label: "Date Added",
         alignment: "left",
-        resolver: (row: IStudentSchema) => toDDMMYYYY(row.addedAt),
+        resolver: (row) => toDDMMYYYY(row.addedAt),
       },
       {
         id: "updatedAt",
@@ -164,29 +171,29 @@ export default function page() {
         disablePadding: true,
         label: "Date updated",
         alignment: "left",
-        resolver: (row: IStudentSchema) => toDDMMYYYY(row.updatedAt),
+        resolver: (row) => toDDMMYYYY(row.updatedAt),
       },
     ];
 
     setHeaders(Studentsheaders);
   };
 
-  const streamheaders: ITableHeaderSchema[] = [
+  const streamheaders: ITableHeaderSchema<IStreamSchema>[] = [
     {
-      id: "id",
+      id: 'Class',
       numeric: false,
       disablePadding: true,
-      label: "Class Id",
+      label: "Class Name",
       alignment: "left",
-      resolver: (row: IStreamSchema) => row.id,
+      resolver: (row) => row.class.name
     },
     {
       id: "name",
       numeric: false,
       disablePadding: true,
-      label: "Class",
+      label: "Stream name",
       alignment: "left",
-      resolver: (row: IStreamSchema) => row.name,
+      resolver: (row) => row.name,
     },
     {
       id: "more_info",
@@ -194,7 +201,7 @@ export default function page() {
       disablePadding: true,
       label: "More Info",
       alignment: "left",
-      resolver: (row: IStreamSchema) => row.more_info,
+      resolver: (row) => row.more_info,
     },
     {
       id: "addedAt",
@@ -202,7 +209,7 @@ export default function page() {
       disablePadding: true,
       label: "Date Added",
       alignment: "left",
-      resolver: (row: IStreamSchema) => toDDMMYYYY(row.addedAt),
+      resolver: (row) => toDDMMYYYY(row.addedAt),
     },
     {
       id: "updatedAt",
@@ -210,7 +217,7 @@ export default function page() {
       disablePadding: true,
       label: "Date updated",
       alignment: "left",
-      resolver: (row: IStreamSchema) => toDDMMYYYY(row.updatedAt),
+      resolver: (row) => toDDMMYYYY(row.updatedAt),
     },
   ];
 
@@ -308,7 +315,7 @@ export default function page() {
   };
 
   React.useEffect(() => {
-    FetchStudents(active_stream? {'streamId' : active_stream.id} : null);
+    FetchStudents({'streamId' : searchparams.get('stream')});
     createHeaders();
   }, [submitting]);
 
@@ -354,6 +361,17 @@ export default function page() {
             startIcon={<DeleteIcon />}
           >
             Delete
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={()=>{
+              router.push(`students/${selected_students[0]}`);
+            }}
+            disabled={!(selected_students.length > 0)}
+            startIcon={<ExitToAppOutlinedIcon />}
+          >
+            View
           </Button>
         </div>
 

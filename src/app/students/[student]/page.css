@@ -1,0 +1,43 @@
+
+
+.spinner-student{
+    display: flex;
+    height : 100dvh;
+    width : 96dvw;
+    justify-content: center;
+    align-items: center;
+}
+
+.st-panel-1{
+    width : 96dvw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.student-body{
+    width : 96dvw;
+}
+
+.space{
+    height : 7dvh;
+}
+
+.student-info{
+    width : 65dvw;
+}
+
+.student-payments{
+    width :30dvw;
+    min-height: "40vh";
+    padding-bottom: "16px";
+}
+
+.userInfo{
+    /* height : 30dvh; */
+    width : 65dvw;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 20px 20px;
+}

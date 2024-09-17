@@ -6,6 +6,7 @@ export interface IClassSchema extends Idefaults {
     name : string;
     more_info : string;
     streams : IStreamSchema[];
+    StreamCount : number;
 }
 
 export interface IPostClassSchema {

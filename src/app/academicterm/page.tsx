@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import React, { ReactNode } from "react";
@@ -9,6 +10,7 @@ import {
   TextField,
   MenuItem,
   Grid,
+  Alert,
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import Edit from "@/components/Edit";
@@ -33,19 +35,66 @@ import { FeedBackProps, FeedBack } from "@/components/FeedBack";
 
 import { toDDMMYYYY } from "@/Utils/ConvertDateTime";
 import Custom_Axios from "@/components/CustomAxios";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const [Value, SetValue] = React.useState<string>("1");
+
+  const [selected_term, setSelectedTerm] =
+    React.useState<IAcademicTermSchema | null>(null);
 
   const [feedBack, setFeedback] = React.useState<FeedBackProps | null>(null);
   const [submitting, setsubmitting] = React.useState<boolean>(false);
   const [edit, setedit] = React.useState<boolean>(false);
   const [terms, setTerms] = React.useState<IAcademicTermSchema[] | null>(null);
-  const [sorted_terms, set_sorted_terms] = React.useState<{year:string; terms: IAcademicTermSchema[];}[] | null>(null)
-  const [active_tab, set_active_tab] = React.useState<string>(sorted_terms? sorted_terms[0].year : '2024')
+  const [sorted_terms, set_sorted_terms] = React.useState<
+    { year: string; terms: IAcademicTermSchema[] }[] | null
+  >(null);
+  const [active_tab, set_active_tab] = React.useState<string>(
+    sorted_terms ? sorted_terms[0].year : "2024"
+  );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     set_active_tab(newValue);
+  };
+
+  const router = useRouter();
+
+  const UpdateTerm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setsubmitting(true);
+    const data = new FormData(event.currentTarget as HTMLFormElement);
+    Custom_Axios()
+      .put(`/Terms/${selected_term?.id}`, selected_term)
+      .then((response) => {
+        if (response.status == 200) {
+          setFeedback({
+            message: "Term updated Successfully",
+            open: true,
+            status: "success",
+            outlined: false,
+          });
+        } else {
+          setFeedback({
+            message: "Failed to update term",
+            open: true,
+            status: "error",
+            outlined: false,
+          });
+        }
+
+        setsubmitting(false);
+        setedit(false);
+
+        setTimeout(() => {
+          setFeedback(null);
+        }, 3000);
+      });
+
+    GetTerms();
+
+    setsubmitting(false);
   };
 
   const AddTerm = (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,6 +138,8 @@ export default function page() {
         }, 3000);
       });
 
+    GetTerms();
+
     setsubmitting(false);
   };
 
@@ -104,8 +155,17 @@ export default function page() {
       });
   };
 
-  const sort_terms = (terms_ : IAcademicTermSchema[]) => {
+  const GetRunningTerm = (): IAcademicTermSchema | null => {
+    let runningTerm: IAcademicTermSchema | null = null;
+    terms?.forEach((term) => {
+      if (term.isActive) {
+        runningTerm = term;
+      }
+    });
+    return runningTerm;
+  };
 
+  const sort_terms = (terms_: IAcademicTermSchema[]) => {
     if (terms_) {
       const sorted = terms_.reduce((acc, term) => {
         const year = dayjs(term.startDate).year().toString();
@@ -123,8 +183,7 @@ export default function page() {
 
       return sorted_array;
     }
-  }
-
+  };
 
   const toggleEditDrawer = (newOpen: boolean) => {
     setedit(newOpen);
@@ -139,12 +198,19 @@ export default function page() {
           name="id"
           label="Term id"
           variant="outlined"
+          defaultValue={selected_term ? selected_term.id : ""}
         />
         <TextField
           sx={{ width: "25vw" }}
           name="name"
+          onChange={(e) => {
+            if (selected_term) {
+              setSelectedTerm({ ...selected_term, name: e.target.value });
+            }
+          }}
           label="Term Name"
           variant="outlined"
+          defaultValue={selected_term ? selected_term.name : ""}
         />
         <TextField
           sx={{ width: "25vw" }}
@@ -152,7 +218,16 @@ export default function page() {
           label="Description"
           variant="outlined"
           multiline
+          defaultValue={selected_term ? selected_term.description : ""}
           rows={4}
+          onChange={(e) => {
+            if (selected_term) {
+              setSelectedTerm({
+                ...selected_term,
+                description: e.target.value,
+              });
+            }
+          }}
         />
         <TextField
           select
@@ -160,6 +235,15 @@ export default function page() {
           name="isActive"
           label="Active"
           variant="outlined"
+          defaultValue={selected_term ? selected_term.isActive : ""}
+          onChange={(e) => {
+            if (selected_term) {
+              setSelectedTerm({
+                ...selected_term,
+                isActive: Boolean(e.currentTarget),
+              });
+            }
+          }}
         >
           <MenuItem key={"true"} value={"true"}>
             {"true"}
@@ -184,23 +268,21 @@ export default function page() {
                 name="startDate"
                 label="Start Date"
                 sx={{ width: "25vw" }}
-
-                //   disabled={
-                //     active_application
-                //       ? active_application.status == "Approved"
-                //         ? false
-                //         : true
-                //       : true
-                //   }
-                //   renderInput={(params) => <TextField {...params} />}
-                // value={""}
-                // onChange={(newValue) =>
-                //   handleExperienceDataChange(
-                //     index,
-                //     "startDate",
-                //     dayjs(newValue).format("MM-DD-YYYY")
-                //   )
-                // }
+                defaultValue={
+                  selected_term
+                    ? dayjs(selected_term.startDate.toString())
+                    : dayjs(Date.now())
+                }
+                onChange={(value) => {
+                  if (selected_term) {
+                    setSelectedTerm({
+                      ...selected_term,
+                      startDate: value
+                        ? value.toISOString()
+                        : dayjs(Date.now()).toISOString(),
+                    });
+                  }
+                }}
               />
             </Grid>
             <Grid item>
@@ -208,22 +290,21 @@ export default function page() {
                 name="endDate"
                 label="End Date"
                 sx={{ width: "25vw" }}
-                //   disabled={
-                //     active_application
-                //       ? active_application.status == "Approved"
-                //         ? false
-                //         : true
-                //       : true
-                //   }
-                //   renderInput={(params) => <TextField {...params} />}
-                // value={exp.endDate ? dayjs(exp.endDate) : null}
-                // onChange={(newValue) =>
-                //   handleExperienceDataChange(
-                //     index,
-                //     "endDate",
-                //     dayjs(newValue).format("MM-DD-YYYY")
-                //   )
-                // }
+                defaultValue={
+                  selected_term
+                    ? dayjs(selected_term.endDate.toString())
+                    : dayjs(Date.now())
+                }
+                onChange={(value) => {
+                  if (selected_term) {
+                    setSelectedTerm({
+                      ...selected_term,
+                      endDate: value
+                        ? value.toISOString()
+                        : dayjs(Date.now()).toISOString(),
+                    });
+                  }
+                }}
               />
             </Grid>
           </Grid>
@@ -244,9 +325,10 @@ export default function page() {
     );
   };
 
-  React.useEffect(()=>{
+
+  React.useEffect(() => {
     GetTerms();
-  },[submitting])
+  }, []);
 
   return (
     <div>
@@ -261,6 +343,7 @@ export default function page() {
           <Button
             variant="contained"
             onClick={() => {
+              setSelectedTerm(null);
               setedit(true);
             }}
             startIcon={<AddOutlinedIcon />}
@@ -268,7 +351,13 @@ export default function page() {
             Add
           </Button>
 
-          <Button variant="contained" startIcon={<SyncAltOutlinedIcon />}>
+          <Button
+            onClick={() => {
+              setedit(true);
+            }}
+            variant="contained"
+            startIcon={<SyncAltOutlinedIcon />}
+          >
             Update
           </Button>
 
@@ -276,20 +365,22 @@ export default function page() {
             Delete
           </Button>
         </div>
+            
+        <Alert
+          variant="outlined"
+          severity={GetRunningTerm() ? "success" : "warning"}
+        >
+          Active Term : {GetRunningTerm()?.name}
+        </Alert>
 
-        <Button variant="contained" startIcon={<DeleteIcon />}>
-          Select Stream
-        </Button>
+        
       </div>
 
-      <div className="space" />
-      <TabContext value = {active_tab}>
+      <TabContext value={active_tab}>
         <TabList onChange={handleChange} aria-label="lab API tabs example">
-
           {sorted_terms?.map((term) => {
             return <Tab key={term.year} label={term.year} value={term.year} />;
           })}
-          
         </TabList>
         {sorted_terms?.map((term) => {
           return (
@@ -297,11 +388,23 @@ export default function page() {
               <div className="sectionItem">
                 {term.terms.map((term) => {
                   return (
-                    <div key={term.id} className="item">
+                    <div
+                      onClick={() => {
+                        // setSelectedTerm(term);
+                        // setedit(true);
+                        router.push(`academicterm/${term.id}`)
+                        
+                      }}
+                      key={term.id}
+                      className="item"
+                    >
                       <Typography variant="h6">{term.name}</Typography>
-                      <Typography variant="body1">{term.description.slice(0,15)}</Typography>
                       <Typography variant="body1">
-                        {toDDMMYYYY(term.startDate)} - {toDDMMYYYY(term.endDate)}
+                        {term.description.slice(0, 15)}
+                      </Typography>
+                      <Typography variant="body1">
+                        {toDDMMYYYY(term.startDate)} -{" "}
+                        {toDDMMYYYY(term.endDate)}
                       </Typography>
                     </div>
                   );
@@ -310,13 +413,12 @@ export default function page() {
             </TabPanel>
           );
         })}
-
       </TabContext>
 
       <Edit
         open={edit}
-        Heading={"ADD ACADEMIC TERM"}
-        onSubmit={AddTerm}
+        Heading={selected_term ? "UPDATE ACADEMIC TERM" : "ADD ACADEMIC TERM"}
+        onSubmit={selected_term ? UpdateTerm : AddTerm}
         toggleDrawer={toggleEditDrawer}
         Fields={Fields}
       />

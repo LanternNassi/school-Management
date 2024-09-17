@@ -134,7 +134,7 @@ export default function page() {
       disablePadding: true,
       label: "Streams",
       alignment: "left",
-      resolver: (row: IClassSchema) => row.streams.length,
+      resolver: (row: IClassSchema) => row.StreamCount,
     },
     {
       id: "addedAt",
@@ -160,15 +160,15 @@ export default function page() {
         id: "id",
         numeric: false,
         disablePadding: true,
-        label: "Class Id",
+        label: "Class",
         alignment: "left",
-        resolver: (row: IStreamSchema) => row.id,
+        resolver: (row: IStreamSchema) => row.class.name,
       },
       {
         id: "name",
         numeric: false,
         disablePadding: true,
-        label: "Class",
+        label: "Stream Name",
         alignment: "left",
         resolver: (row: IStreamSchema) => row.name,
       },
@@ -289,7 +289,7 @@ export default function page() {
   };
 
   React.useEffect(() => {
-    FetchStreams(selected_class? {'class' : selected_class.id} : null);
+    FetchStreams({'class' : selected_class? selected_class.id : null , 'verbose' : true});
     createHeaders();
   }, [submitting]);
 
@@ -341,7 +341,7 @@ export default function page() {
             variant="contained"
             disabled={!(selected_streams.length > 0)}
             onClick={()=>{
-              router.push('/students')
+              router.push(`/students?stream=${selected_streams[0]}`)
             }}
             startIcon={<DeleteIcon />}
           >
@@ -429,7 +429,7 @@ export default function page() {
             FetchClassById(selected[0], (data) => {
               setselected_class(data);
             });
-            FetchStreams({'class':selected[0]})
+            FetchStreams({'class':selected[0] , 'verbose' : true})
             setTimeout(() => {
               setFeedback(null);
             }, 3000);

@@ -1,10 +1,10 @@
 
 
-export default interface ITableHeaderSchema{
+export default interface ITableHeaderSchema<T = any>{
     id : string;
     numeric : boolean;
     disablePadding : boolean;
     label : string;
-    alignment : string;
-    resolver : (row : any) => string | number | boolean | null | undefined
+    alignment : "left" | "right" | "center";
+    resolver : (row : T) => string | number | boolean | null | undefined
 }

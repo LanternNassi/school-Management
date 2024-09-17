@@ -78,14 +78,6 @@ export default function page() {
     
     const headers: ITableHeaderSchema[] = [
       {
-        id: "id",
-        numeric: false,
-        disablePadding: true,
-        label: "Class Id",
-        alignment: "left",
-        resolver: (row: IClassSchema) => row.id
-      },
-      {
         id: "name",
         numeric: false,
         disablePadding: true,
@@ -103,11 +95,11 @@ export default function page() {
       },
       {
         id: "streams",
-        numeric: false,
+        numeric: true,
         disablePadding: true,
         label: "Streams",
         alignment: "left",
-        resolver: (row: IClassSchema) => row.streams.length,
+        resolver: (row: IClassSchema) => row.StreamCount,
       },
       {
         id: "addedAt",
@@ -220,6 +212,8 @@ export default function page() {
     FetchClasses();
     createHeaders();
   }, [submitting]);
+
+  console.log(classes)
 
   return (
     <>

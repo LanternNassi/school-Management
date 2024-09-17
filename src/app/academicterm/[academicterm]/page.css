@@ -1,0 +1,37 @@
+.spinner_ov {
+    display : flex;
+    height : 90dvh;
+    width : 98dvw;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.termcontainer{
+    margin-top: 20px;
+    display : flex;
+    height : 100dvh;
+    width : 99dvw;
+
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-start;
+}
+
+.term-panel-info{
+    height : 80dvh;
+    width : 72dvw;  
+}
+
+
+.term-panel-meta{
+    height : 40dvh;
+    width : 20dvw;
+}
+
+.termInfo{
+    width : 68dvw;
+    display : grid;
+    grid-template-columns: auto auto auto;
+    gap : 20px 20px
+}
