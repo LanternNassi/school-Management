@@ -4,7 +4,7 @@
 }
 
 .section{
-    width : 80vw;
+    width : 50vw;
     min-height: 10vh;
     display: flex;
     flex-wrap: wrap;
@@ -15,7 +15,7 @@
 
 .ActionsTerm{
     height : 20dvh;
-    width : 40dvw;
+    width : 30dvw;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

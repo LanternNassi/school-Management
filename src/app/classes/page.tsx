@@ -213,8 +213,6 @@ export default function page() {
     createHeaders();
   }, [submitting]);
 
-  console.log(classes)
-
   return (
     <>
       <FeedBack

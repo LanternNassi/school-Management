@@ -9,29 +9,48 @@
 
 .termcontainer{
     margin-top: 20px;
-    display : flex;
     height : 100dvh;
-    width : 99dvw;
+    width : 100dvw;
 
+    display : flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: flex-start;
+    
+    /* display: grid;
+    grid-template-columns: auto auto;
+    gap : 20px 0px; */
 }
 
 .term-panel-info{
-    height : 80dvh;
-    width : 72dvw;  
+    min-height : 50dvh;
+    width : 65dvw;  
 }
 
-
 .term-panel-meta{
-    height : 40dvh;
-    width : 20dvw;
+    min-height: 50dvh;
+    width : 30dvw;
+    display: grid;
+    grid-template-columns: auto;
+    gap : 15px
+}
+
+.term-panel-numeric{
+    min-height : 40dvh;
 }
 
 .termInfo{
     width : 68dvw;
     display : grid;
-    grid-template-columns: auto auto auto;
-    gap : 20px 20px
+    grid-template-columns: auto auto auto auto;
+    gap : 20px 20px ;
+}
+
+.termclassTable{
+    width : 60dvw;
+    min-height : 20dvh;
+    display : flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }

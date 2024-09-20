@@ -27,6 +27,7 @@ import { visuallyHidden } from "@mui/utils";
 
 import { toDDMMYYYY } from "../../Utils/ConvertDateTime";
 import FormatMoney from "../../Utils/MoneyFormatter";
+import { on } from "events";
 
 
 
@@ -188,6 +189,7 @@ export default function NormalTable({
   headers,
   table_rows,
   OnSelection,
+  onRowClick,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -290,15 +292,6 @@ export default function NormalTable({
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => {
-                      let primary = "id";
-                      for (const header of headers) {
-                        if (header["primary"]) {
-                          primary = header.id;
-                        }
-                      }
-                      handleClick(event, row[primary]);
-                    }}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -308,6 +301,15 @@ export default function NormalTable({
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
+                        onClick={(event) => {
+                          let primary = "id";
+                          for (const header of headers) {
+                            if (header["primary"]) {
+                              primary = header.id;
+                            }
+                          }
+                          handleClick(event, row[primary]);
+                        }}
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
@@ -317,64 +319,21 @@ export default function NormalTable({
                     </TableCell>
 
                     {headers.map((header, key) => {
-                      // if (header.date) {
-                      //   var computed_date = toDDMMYYYY(row[header.id]);
-                      //   if (computed_date == "01/01/1970") {
-                      //     return (
-                      //       <TableCell key={key} align={header.alignment}>
-                      //         null
-                      //       </TableCell>
-                      //     );
-                      //   }
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {computed_date}
-                      //     </TableCell>
-                      //   );
-                      // }
-
-                      // if (header.money) {
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {FormatMoney(row[header.id])}
-                      //     </TableCell>
-                      //   );
-                      // }
-                      // if (header.clientName) {
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {row.client.firstName + " " + row.client.otherNames}
-                      //     </TableCell>
-                      //   );
-                      // }
-
-                      // if (header.LoanClientName) {
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {row.loanApplication.client.firstName + " " + row.loanApplication.client.otherNames}
-                      //     </TableCell>
-                      //   );
-                      // }
-
-                      // if (header.user) {
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {row.user ? row.user.username : null}
-                      //     </TableCell>
-                      //   );
-                      // }
-
-                      // if (header.transaction_name) {
-                      //   return (
-                      //     <TableCell key={key} align={header.alignment}>
-                      //       {row.account.client.firstName + " " + row.account.client.otherNames}
-                      //     </TableCell>
-                      //   );
-                      // }
-
                       return (
-                        <TableCell key={key} align={header.alignment}>
-                          {header.resolver(row)}
+                        <TableCell 
+                          onClick = {(event) =>{
+                            let primary = "id";
+                            for (const header of headers) {
+                              if (header["primary"]) {
+                                primary = header.id;
+                              }
+                            }
+                            handleClick(event, row[primary]);
+                            onRowClick(event, row)
+                          }}
+                           key={key}
+                           align={header.alignment}>
+                            {header.resolver(row)}
                         </TableCell>
                       );
                     })}
@@ -415,5 +374,6 @@ NormalTable.propTypes = {
   headers: PropTypes.array.isRequired,
   table_rows: PropTypes.array.isRequired,
   OnSelection: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func.isRequired,
   heading: PropTypes.string.IsRequired,
 };

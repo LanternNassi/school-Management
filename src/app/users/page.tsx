@@ -201,11 +201,17 @@ export default function page() {
       });
   };
 
-  const UpdateUser = (event: React.FormEvent<HTMLFormElement>) => {};
+  const UpdateUser = (event: React.FormEvent<HTMLFormElement>) => {
+    
+  };
 
   const toggleEditDrawer = (newOpen: boolean) => {
     setedit(newOpen);
   };
+
+  const OnRowClick = (event: any, row: IUserSchema) => {
+      router.push(`users/${row.id}`);
+  }
 
   const Fields = (): ReactNode => {
     return (
@@ -366,6 +372,7 @@ export default function page() {
             heading={"Users"}
             OnSelection={OnSelection}
             headers={headers}
+            onRowClick={OnRowClick}
             table_rows={users}
           />
         </div>

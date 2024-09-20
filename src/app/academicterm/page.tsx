@@ -51,7 +51,7 @@ export default function page() {
     { year: string; terms: IAcademicTermSchema[] }[] | null
   >(null);
   const [active_tab, set_active_tab] = React.useState<string>(
-    sorted_terms ? sorted_terms[0].year : "2024"
+    sorted_terms?.length ? sorted_terms[0].year : "2024"
   );
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -132,6 +132,17 @@ export default function page() {
 
         setsubmitting(false);
         setedit(false);
+
+        setTimeout(() => {
+          setFeedback(null);
+        }, 3000);
+      }).catch((error) => {
+        setFeedback({
+          message: error.response.data,
+          open: true,
+          status: "error",
+          outlined: false,
+        });
 
         setTimeout(() => {
           setFeedback(null);
@@ -325,7 +336,6 @@ export default function page() {
     );
   };
 
-
   React.useEffect(() => {
     GetTerms();
   }, []);
@@ -338,50 +348,37 @@ export default function page() {
         outlined={feedBack ? feedBack.outlined : false}
         status={feedBack ? feedBack.status : "error"}
       />
-      <div className="ActionsRegionTerm">
-        <div className="ActionsTerm">
-          <Button
-            variant="contained"
-            onClick={() => {
-              setSelectedTerm(null);
-              setedit(true);
-            }}
-            startIcon={<AddOutlinedIcon />}
-          >
-            Add
-          </Button>
-
-          <Button
-            onClick={() => {
-              setedit(true);
-            }}
-            variant="contained"
-            startIcon={<SyncAltOutlinedIcon />}
-          >
-            Update
-          </Button>
-
-          <Button variant="contained" startIcon={<DeleteIcon />}>
-            Delete
-          </Button>
-        </div>
-            
-        <Alert
-          variant="outlined"
-          severity={GetRunningTerm() ? "success" : "warning"}
-        >
-          Active Term : {GetRunningTerm()?.name}
-        </Alert>
-
-        
-      </div>
-
       <TabContext value={active_tab}>
-        <TabList onChange={handleChange} aria-label="lab API tabs example">
-          {sorted_terms?.map((term) => {
-            return <Tab key={term.year} label={term.year} value={term.year} />;
-          })}
-        </TabList>
+        <div className="ActionsRegionTerm">
+          <TabList onChange={handleChange} aria-label="lab API tabs example">
+            {sorted_terms?.map((term) => {
+              return (
+                <Tab key={term.year} label={term.year} value={term.year} />
+              );
+            })}
+          </TabList>
+
+          <div className="ActionsTerm">
+            <Button
+              variant="contained"
+              onClick={() => {
+                setSelectedTerm(null);
+                setedit(true);
+              }}
+              startIcon={<AddOutlinedIcon />}
+            >
+              Add
+            </Button>
+
+            <Alert
+              variant="outlined"
+              severity={GetRunningTerm() ? "success" : "warning"}
+            >
+              Active Term : {GetRunningTerm()?.name}
+            </Alert>
+          </div>
+        </div>
+
         {sorted_terms?.map((term) => {
           return (
             <TabPanel key={term.year} className="section" value={term.year}>
@@ -392,8 +389,7 @@ export default function page() {
                       onClick={() => {
                         // setSelectedTerm(term);
                         // setedit(true);
-                        router.push(`academicterm/${term.id}`)
-                        
+                        router.push(`academicterm/${term.id}`);
                       }}
                       key={term.id}
                       className="item"
