@@ -132,9 +132,9 @@ export default function page() {
       id: "streams",
       numeric: false,
       disablePadding: true,
-      label: "Streams",
+      label: "Streams ",
       alignment: "left",
-      resolver: (row: IClassSchema) => row.StreamCount,
+      resolver: (row: IClassSchema) => row.streamCount,
     },
     {
       id: "addedAt",

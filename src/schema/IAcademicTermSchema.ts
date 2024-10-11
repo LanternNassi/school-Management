@@ -9,6 +9,7 @@ export interface IAcademicTermSchema extends Idefaults{
     isActive : boolean;
     startDate : string;
     endDate : string;
+    isPromotional : boolean;
 }
 
 
@@ -18,6 +19,7 @@ export interface IPostAcademicTermSchema {
     isActive : boolean;
     startDate : string;
     endDate : string;
+    isPromotional : boolean;
 }
 
 // Generic response from the server

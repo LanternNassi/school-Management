@@ -99,7 +99,7 @@ export default function page() {
         disablePadding: true,
         label: "Streams",
         alignment: "left",
-        resolver: (row: IClassSchema) => row.StreamCount,
+        resolver: (row: IClassSchema) => row.streamCount,
       },
       {
         id: "addedAt",

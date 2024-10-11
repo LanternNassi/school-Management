@@ -46,13 +46,13 @@ import FormatMoney from "@/Utils/MoneyFormatter";
 import { truncate } from "fs";
 import { useRouter } from "next/navigation";
 
-
 export default function page({ params }: { params: { academicterm: string } }) {
   const [term, setTerm] = React.useState<IAcademicTermResponse | null>(null);
   const [selected_meta, setselected_meta] = React.useState<string[]>([]);
   const [headers, setHeaders] = React.useState<ITableHeaderSchema[]>([]);
   const [submitting, setsubmitting] = React.useState<boolean>(false);
   const [edit, setedit] = React.useState<boolean>(false);
+  const [feesEdit, setFeesEdit] = React.useState<boolean>(false);
   const [feedBack, setFeedback] = React.useState<FeedBackProps | null>(null);
 
   const GetTermInfo = (term_id: string): void => {
@@ -69,10 +69,12 @@ export default function page({ params }: { params: { academicterm: string } }) {
     setedit(newOpen);
   };
 
+  const toggleFeesEditDrawer = (newOpen: boolean) => {
+    setFeesEdit(newOpen);
+  };
+
   const UpdateTerm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    console.log(term?.term);
 
     setsubmitting(true);
     const data = new FormData(event.currentTarget as HTMLFormElement);
@@ -122,6 +124,51 @@ export default function page({ params }: { params: { academicterm: string } }) {
     createHeaders();
 
     setsubmitting(false);
+  };
+
+  const UpdateFeesTerm = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setsubmitting(true)
+
+    const data = new FormData(event.currentTarget as HTMLFormElement);
+
+    Custom_Axios()
+      .post(`/StudentFeesStructure/term/${term?.term.id}`)
+      .then((response) => {
+        if (response.status == 200){
+          setFeedback({
+            message: "Term Structures created successfully",
+            open: true,
+            status: "success",
+            outlined: false,
+          });
+
+        }else {
+
+
+        }
+
+        setsubmitting(false)
+        setFeesEdit(false)
+      })
+      .catch((error) => {
+        setFeedback({
+          message: error.response.data,
+          open: true,
+          status: "error",
+          outlined: false,
+        });
+
+        setsubmitting(false);
+        setFeesEdit(false);
+
+        setTimeout(() => {
+          setFeedback(null);
+        }, 3000);
+      });
+
+    setsubmitting(false)
   };
 
   const OnSelection = (rows: string[]) => {
@@ -231,6 +278,43 @@ export default function page({ params }: { params: { academicterm: string } }) {
     GetTermInfo(params.academicterm);
     createHeaders();
   }, []);
+
+  const FeesField = (): ReactNode => {
+    return (
+      <>
+        <TextField
+          sx={{ width: "25vw" }}
+          name="amount"
+          label="Amount"
+          variant="outlined"
+          defaultValue={""}
+        />
+
+        <TextField
+          sx={{ width: "25vw" }}
+          name="requirements"
+          label="Requirements"
+          variant="outlined"
+          multiline
+          disabled
+          rows={4}
+          defaultValue={""}
+        />
+
+        <LoadingButton
+          type="submit"
+          sx={{ width: "25vw", height: "8vh" }}
+          variant="contained"
+          tabIndex={-1}
+          loading={submitting}
+          loadingPosition="start"
+          startIcon={<SaveIcon fontSize="large" />}
+        >
+          <span>{`Update ${term?.term.name}`}</span>
+        </LoadingButton>
+      </>
+    );
+  };
 
   const Fields = (): ReactNode => {
     return (
@@ -440,11 +524,18 @@ export default function page({ params }: { params: { academicterm: string } }) {
             {term.term.name}
           </Typography>
         </Breadcrumbs>
-
-        <Chip
-          label={term.term.isActive ? "Active Term" : "Not Active"}
-          color={term.term.isActive ? "success" : "warning"}
-        />
+        <div className="chips">
+          <Chip
+            label={
+              term.term.isPromotional ? "Promotional Term" : "Not Promotional"
+            }
+            color={term.term.isPromotional ? "success" : "warning"}
+          />
+          <Chip
+            label={term.term.isActive ? "Active Term" : "Not Active"}
+            color={term.term.isActive ? "success" : "warning"}
+          />
+        </div>
       </div>
 
       <div className={"termcontainer"}>
@@ -521,13 +612,11 @@ export default function page({ params }: { params: { academicterm: string } }) {
               data={[
                 {
                   label: "Paid Fees",
-                  value: 300000,
-                  // value : term.meta_data.total_paid_fees
+                  value : term.meta_data.total_paid_fees
                 },
                 {
                   label: "Unpaid Fees",
-                  value: 200000,
-                  // value : term.meta_data.total_unpaid_fees
+                  value : term.meta_data.total_unpaid_fees
                 },
               ]}
             />
@@ -545,12 +634,25 @@ export default function page({ params }: { params: { academicterm: string } }) {
           <Button
             variant="contained"
             onClick={() => {
-              router.push(`/academicterm/${term.term.id}/class/${selected_meta[0]}`);
+              router.push(
+                `/academicterm/${term.term.id}/class/${selected_meta[0]}`
+              );
             }}
             disabled={!selected_meta.length}
             startIcon={<AccountCircleOutlined />}
           >
             {`Students Management`}
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              setFeesEdit(true);
+            }}
+            disabled={!selected_meta.length}
+            startIcon={<AccountCircleOutlined />}
+          >
+            {`Fees Management`}
           </Button>
 
           <Button
@@ -570,6 +672,14 @@ export default function page({ params }: { params: { academicterm: string } }) {
         onSubmit={UpdateTerm}
         toggleDrawer={toggleEditDrawer}
         Fields={Fields}
+      />
+
+      <Edit
+        open={feesEdit}
+        Heading={"UPDATE FEES"}
+        onSubmit={UpdateFeesTerm}
+        toggleDrawer={toggleFeesEditDrawer}
+        Fields={FeesField}
       />
     </>
   );

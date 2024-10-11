@@ -178,6 +178,11 @@ export default function page() {
     setHeaders(Studentsheaders);
   };
 
+  const OnRowClick = (event:any , row : IStudentSchema) => {
+      router.push(`students/${row.id}`);
+
+  }
+
   const streamheaders: ITableHeaderSchema<IStreamSchema>[] = [
     {
       id: 'Class',
@@ -424,6 +429,7 @@ export default function page() {
             OnSelection={OnSelection}
             headers={headers}
             table_rows={students}
+            onRowClick={OnRowClick}
           />
         </div>
       ) : (

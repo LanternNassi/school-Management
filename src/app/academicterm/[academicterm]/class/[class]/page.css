@@ -1,0 +1,41 @@
+.termClass{
+    min-height : 80dvh;
+    width : 100dvw;
+
+    display : grid;
+    grid-template-columns: auto auto;
+    gap : 0px 30px;
+
+    justify-content: center;
+    align-items: center;
+
+}
+
+.termClass-classes{
+    min-height: 70dvh;
+    min-width: 60dvw;
+
+
+    display : grid;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.termClass-reqs{
+    min-height: 70dvh;
+    min-width: 30dvw;
+
+    background-color: red;
+}
+
+.actionbar{
+    height : 8dvh;
+    width : 60dvw;
+
+    display : flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
